@@ -88,7 +88,20 @@ export async function clashToLink(yamlText: string): Promise<ConvertResult> {
     let config: any;
 
     if (currentParser === "js") {
-      config = parseJsYaml(yamlText);
+      // Try JSON first (fast path for JSON input)
+      const trimmed = yamlText.trim();
+      if ((trimmed.startsWith("{") && trimmed.endsWith("}")) ||
+          (trimmed.startsWith("[") && trimmed.endsWith("]"))) {
+        try {
+          config = JSON.parse(yamlText);
+        } catch {
+          // Fall back to YAML parser
+          config = parseJsYaml(yamlText);
+        }
+      } else {
+        config = parseJsYaml(yamlText);
+      }
+
       if (!config) {
         return {
           success: false,

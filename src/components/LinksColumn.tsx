@@ -23,6 +23,7 @@ import { setParser, clashToLink } from "../converter";
 import { useIoActions } from "../hooks/useIoActions";
 import { UrlBar } from "./UrlBar";
 import { EngineSwitcher } from "./EngineSwitcher";
+import { QRCodeDisplay } from "./QRCodeDisplay";
 
 const useStyles = makeStyles({
   column: {
@@ -189,6 +190,8 @@ export function LinksColumn({
         placeholder={t("linksPlaceholder")}
         resize="none"
       />
+
+      <QRCodeDisplay links={value} />
 
       <div className={styles.options}>
         <Text weight="semibold">{t("outputFormat")}</Text>
